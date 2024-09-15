@@ -1,3 +1,5 @@
+# Dotnet Cli
+
 1. dotnet --info
 2. dotnet -h
 3. dotnet new -h
@@ -19,3 +21,17 @@
 18. dotnet ef
 19. dotnet ef migrations add InitialCreate -o Data/Migrations
 20. dotnet ef database -h
+21. dotnet new gitignore --force
+
+### Angular Cli
+
+1. node --version
+
+   install node.js
+2. npm install -g @angular/cli@18.2.4
+3. ng version
+4. ng new client
+5. ng serve
+6. npm start
+7. npm i ngx-bootstrap bootstrap font-awesome --save
+8.
