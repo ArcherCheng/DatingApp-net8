@@ -22,6 +22,8 @@
 19. dotnet ef migrations add InitialCreate -o Data/Migrations
 20. dotnet ef database -h
 21. dotnet new gitignore --force
+22. dotnet ef migrations add addUsersPasswordHash
+23. dotnet ef database update
 
 ### Angular Cli
 
@@ -34,4 +36,18 @@
 5. ng serve
 6. npm start
 7. npm i ngx-bootstrap bootstrap font-awesome --save
-8.
+8. use admin cmd
+9. use admin cmd mode
+10. choco install mkcert
+11. mkcert -install
+12. md ssl
+13. cd ssl
+14. mkcert localhost
+15. open angular.json
+16. angular.json => "serve": {
+    "options": {
+    "ssl": true,
+    "sslKey": "./ssl/localhost-key.pem",
+    "sslCert": "./ssl/localhost.pem"
+    },,,,}
+17.

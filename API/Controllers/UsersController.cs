@@ -5,16 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-[ApiController]
-[Route("api/[controller]")]
-public class UsersController : ControllerBase
+public class UsersController(DataContext context) : BaseApiController
 {
-    private readonly DataContext _context;
+    private readonly DataContext _context = context;
 
-    public UsersController(DataContext context)
-    {
-        _context = context;
-    }
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AppUsers>>> GetUsers()
     {
