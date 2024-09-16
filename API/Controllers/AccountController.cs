@@ -2,21 +2,18 @@
 using API.Data;
 using API.Dtos;
 using API.Entities;
+using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-public class AccountController:BaseApiController
+public class AccountController(DataContext _context,ITokenService _tokenService) : BaseApiController
 {
-    private readonly DataContext _context;
-    
-    public AccountController(DataContext context)
-    {
-        _context = context;
-    }
+    //private readonly DataContext _context = context;
 
-    public async Task<ActionResult<AppUsers>> Register(RegisterDto registerDto)
+    [HttpPost("register")]
+    public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
         if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
         using var hmac = new System.Security.Cryptography.HMACSHA512();
@@ -30,7 +27,34 @@ public class AccountController:BaseApiController
 
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
-        return user;
+        return new UserDto
+        {
+            Username = user.UserName,
+            Token = _tokenService.CreateToken(user)
+        };
+    }
+
+    [HttpPost("login")]
+    public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
+    {
+        var user = await _context.Users
+            .SingleOrDefaultAsync(x => x.UserName.ToLower() == loginDto.Username.ToLower());
+
+        if (user == null) return Unauthorized("Invalid username");  
+
+        using var hmac = new System.Security.Cryptography.HMACSHA512(user.PasswordSalt);
+
+        var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(loginDto.Password));
+
+        for (int i = 0; i < computedHash.Length; i++)   
+        {
+            if (computedHash[i] != user.PasswordHash[i]) return Unauthorized("Invalid password");
+        }
+        return new UserDto
+        {
+            Username = user.UserName,
+            Token = _tokenService.CreateToken(user)
+        };
     }
 
     private async Task<bool> UserExists(string username)
