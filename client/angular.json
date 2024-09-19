@@ -59,7 +59,7 @@
         },
         "serve": {
           "options": {
-            "ssl": true,
+            "ssl": false,
             "sslKey": "./ssl/localhost-key.pem",
             "sslCert": "./ssl/localhost.pem"
           },

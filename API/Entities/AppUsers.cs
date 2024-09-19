@@ -7,4 +7,5 @@ public class AppUsers
     public required byte[] PasswordHash { get; set; }
     public required byte[] PasswordSalt { get; set; }
 
+
 }

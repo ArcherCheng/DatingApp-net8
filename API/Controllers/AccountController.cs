@@ -3,6 +3,7 @@ using API.Data;
 using API.Dtos;
 using API.Entities;
 using API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,16 +12,16 @@ namespace API.Controllers;
 public class AccountController(DataContext _context,ITokenService _tokenService) : BaseApiController
 {
     //private readonly DataContext _context = context;
-
+    [AllowAnonymous]
     [HttpPost("register")]
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
-        if (await UserExists(registerDto.Username)) return BadRequest("Username is taken");
+        if (await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
         using var hmac = new System.Security.Cryptography.HMACSHA512();
 
         var user = new AppUsers
         {
-            UserName = registerDto.Username.ToLower(),  
+            UserName = registerDto.UserName.ToLower(),  
             PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(registerDto.Password)),
             PasswordSalt = hmac.Key
         };
@@ -29,16 +30,17 @@ public class AccountController(DataContext _context,ITokenService _tokenService)
         await _context.SaveChangesAsync();
         return new UserDto
         {
-            Username = user.UserName,
+            UserName = user.UserName,
             Token = _tokenService.CreateToken(user)
         };
     }
 
+    [AllowAnonymous]
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
         var user = await _context.Users
-            .SingleOrDefaultAsync(x => x.UserName.ToLower() == loginDto.Username.ToLower());
+            .SingleOrDefaultAsync(x => x.UserName.ToLower() == loginDto.UserName.ToLower());
 
         if (user == null) return Unauthorized("Invalid username");  
 
@@ -52,7 +54,7 @@ public class AccountController(DataContext _context,ITokenService _tokenService)
         }
         return new UserDto
         {
-            Username = user.UserName,
+            UserName = user.UserName,
             Token = _tokenService.CreateToken(user)
         };
     }
