@@ -1,17 +1,17 @@
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
     <div class="container">
-        <a class="navbar-brand" href="#">Datting App</a>
+        <a class="navbar-brand" routerLink="/" routerLinkActive="active">Datting App</a>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             @if (accountService.currentUser()) {
                 <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link">Matches</a>
+                        <a class="nav-link" routerLink="/members" routerLinkActive="active">Matches</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link">Lists</a>
+                        <a class="nav-link" routerLink="/lists" routerLinkActive="active">Lists</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link">Messages</a>
+                        <a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" (click)="logout()">Logout</a>
@@ -20,7 +20,7 @@
             }
             @if (accountService.currentUser()) {
                 <div dropdown class="dropdown">
-                    <a dropdownToggle class="dropdown-toggle text-loght">Welcome user</a>
+                    <a dropdownToggle class="dropdown-toggle text-loght">Welcome {{accountService.currentUser()?.userName | titlecase}}</a>
                     <div *dropdownMenu class="dropdown-menu">
                         <a class="dropdown-item" href="#">Edit Profile</a>
                         <div class="dropdown-divider"></div>
