@@ -11,7 +11,7 @@ public class TokenService(IConfiguration config) : ITokenService
 {
     private readonly IConfiguration config = config;
 
-    public string CreateToken(AppUsers user)
+    public string CreateToken(AppUser user)
     {
         var tokenKey = config["TokenKey"] ?? throw new Exception("TokenKey not found from appsettings.json");
         if (tokenKey.Length < 64) throw new Exception("TokenKey is too short");

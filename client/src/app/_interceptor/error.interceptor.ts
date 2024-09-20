@@ -23,7 +23,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
                 }
                 throw modalStateErrors.flat();
               } else {
-                toastr.error(error.statusText, error.status); 
+                toastr.error(error.error, error.status); 
               }
               break;
             case 401:
@@ -31,16 +31,15 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
               break;
             case 404:
               // auto logout if 403 response returned from api
-              router.navigate(['/not-found']);
+              router.navigateByUrl('/not-found');
               break;
             case 500:
               const navigationExtras: NavigationExtras = { state: { error: error.error } };
-              router.navigate(['/server-error'], navigationExtras);
+              router.navigateByUrl('/server-error', navigationExtras);
               break;
             default:
               toastr.error('Something unexpected went wrong');
               break;
-          
           }
         }
         throw error;

@@ -19,7 +19,7 @@ public class AccountController(DataContext _context,ITokenService _tokenService)
         if (await UserExists(registerDto.UserName)) return BadRequest("Username is taken");
         using var hmac = new System.Security.Cryptography.HMACSHA512();
 
-        var user = new AppUsers
+        var user = new AppUser
         {
             UserName = registerDto.UserName.ToLower(),  
             PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(registerDto.Password)),

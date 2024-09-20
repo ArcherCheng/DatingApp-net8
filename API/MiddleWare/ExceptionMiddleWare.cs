@@ -19,7 +19,7 @@ public class ExceptionMiddleWare(RequestDelegate next , ILogger<ExceptionMiddleW
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
             var response = env.IsDevelopment() 
-                ? new ApiException(context.Response.StatusCode, ex.Message, ex.StackTrace?.ToString()) 
+                ? new ApiException(context.Response.StatusCode, ex.Message, ex.StackTrace) 
                 : new ApiException(context.Response.StatusCode, ex.Message, "Internal Server Error");
 
             var options = new JsonSerializerOptions

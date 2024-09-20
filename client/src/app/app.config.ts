@@ -9,8 +9,8 @@ import { errorInterceptor } from './_interceptor/error.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideZoneChangeDetection({ eventCoalescing: true }),
     provideHttpClient(withInterceptors([errorInterceptor])),
     provideAnimations(),
     provideToastr({

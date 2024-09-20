@@ -12,7 +12,7 @@ public class UsersController(DataContext context) : BaseApiController
 
     [AllowAnonymous]
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AppUsers>>> GetUsers()
+    public async Task<ActionResult<IEnumerable<AppUser>>> GetUsers()
     {
         var users = await _context.Users.ToListAsync();
         if (users == null) return NotFound();
@@ -22,7 +22,7 @@ public class UsersController(DataContext context) : BaseApiController
 
     [Authorize]
     [HttpGet("{id}")]
-    public async Task<ActionResult<AppUsers>> GetUser(int id)
+    public async Task<ActionResult<AppUser>> GetUser(int id)
     {
         var user = await _context.Users.FindAsync(id);
 
