@@ -18,8 +18,8 @@ export class NavComponent {
   router = inject(Router);
   toastr = inject(ToastrService);
   model: any = {
-    userName: 'abor',
-    password: 'password'
+    userName: 'Lisa',
+    password: 'Pa$$w0rd'
   };
   
   login() {

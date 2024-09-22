@@ -42,7 +42,7 @@ public class UserRepository(DataContext context, IMapper mapper) : IUserReposito
             .ToListAsync();
     }
 
-    public async Task<bool> SAveAllAsync(AppUser user)
+    public async Task<bool> SaveAllAsync(AppUser user)
     {
         return await context.SaveChangesAsync() > 0;
     }

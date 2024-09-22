@@ -30,7 +30,6 @@ public class Seed
 
             context.Users.Add(user);
         }
-
         await context.SaveChangesAsync();
     }
 }
