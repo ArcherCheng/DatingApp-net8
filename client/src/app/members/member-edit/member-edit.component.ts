@@ -1,14 +1,18 @@
 import { Member } from './../../_models/member';
 import { Component, HostListener, inject, ViewChild } from '@angular/core';
-import { FormGroup, NgForm } from '@angular/forms';
+import { FormGroup, FormsModule, NgForm } from '@angular/forms';
 import { AccountService } from '../../_services/account.service';
 import { MembersService } from '../../_services/members.service';
 import { ToastrService } from 'ngx-toastr';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { GalleryModule } from 'ng-gallery';
+import { DatePipe } from '@angular/common';
+import { PhotoEditorComponent } from '../photo-editor/photo-editor.component';
 
 @Component({
   selector: 'app-member-edit',
   standalone: true,
-  imports: [],
+  imports: [TabsModule,GalleryModule,FormsModule,DatePipe,PhotoEditorComponent],
   templateUrl: './member-edit.component.html',
   styleUrl: './member-edit.component.css'
 })
@@ -38,7 +42,7 @@ export class MemberEditComponent {
     });
   }
 
-  updasteMember() {
+  updateMember() {
     this.memberService.updateMember(this.editForm?.value).subscribe({
       next: () => {
         this.toastr.success('Profile updated successfully');
