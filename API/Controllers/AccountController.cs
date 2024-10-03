@@ -43,10 +43,13 @@ public class AccountController(DataContext _context,ITokenService _tokenService,
     [HttpPost("login")]
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
+        // var user = await _context.Users
+        //     .SingleOrDefaultAsync(x => x.UserName.ToLower() == loginDto.UserName.ToLower());
         var user = await _context.Users
-            .SingleOrDefaultAsync(x => x.UserName.ToLower() == loginDto.UserName.ToLower());
+            .Include(p => p.Photos)
+            .FirstOrDefaultAsync(x => x.UserName.ToLower() == loginDto.UserName.ToLower());
 
-        if (user == null) return Unauthorized("Invalid username");  
+        if (user == null) return Unauthorized("Invalid username");
 
         using var hmac = new System.Security.Cryptography.HMACSHA512(user.PasswordSalt);
 
@@ -60,15 +63,15 @@ public class AccountController(DataContext _context,ITokenService _tokenService,
         return new UserDto
         {
             UserName = user.UserName,
-            KnownAs = user.KnownAs,
             Token = _tokenService.CreateToken(user),
-            Gender = user.Gender,
+            //KnownAs = user.KnownAs,
+            //Gender = user.Gender,
             PhotoUrl = user.Photos.FirstOrDefault(x => x.IsMain)?.Url
         };
     }
 
     private async Task<bool> UserExists(string username)
     {
-        return await _context.Users.AnyAsync(x => x.UserName == username.ToLower());
+        return await _context.Users.AnyAsync(x => x.UserName.ToLower() == username.ToLower());
     }
 }
